@@ -1,0 +1,74 @@
+#include "byrantk_lp63.dtsi"
+
+/ {
+    kscan_matrix: kscan_matrix {
+        compatible = "zmk,kscan-gpio-matrix";
+                diode-direction = "row2col";
+        wakeup-source;
+
+        col-gpios
+            = <&pro_micro 8 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>
+            , <&pro_micro 9 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>
+            , <&pro_micro 2 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>
+            , <&pro_micro 3 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>
+            , <&pro_micro 4 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>
+            , <&pro_micro 5 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>
+            , <&pro_micro 6 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>
+            , <&pro_micro 7 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>
+            , <&pro_micro 21 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>   /* D21 = P0.31: COL_D10, screenshot key */
+            ;
+
+        row-gpios
+            = <&shifter0 0 GPIO_ACTIVE_HIGH>
+            , <&shifter0 2 GPIO_ACTIVE_HIGH>
+            , <&shifter0 4 GPIO_ACTIVE_HIGH>
+            , <&shifter0 5 GPIO_ACTIVE_HIGH>
+            , <&shifter0 7 GPIO_ACTIVE_HIGH>
+            , <&shifter0 6 GPIO_ACTIVE_HIGH>
+            , <&shifter0 1 GPIO_ACTIVE_HIGH>
+            , <&shifter0 3 GPIO_ACTIVE_HIGH>
+            ;
+    };
+};
+
+/* Encoder push (EC12 pin D -> ENC_SW -> D18 / P1.15), switch to GND. */
+/ {
+    kscan_direct: kscan_direct {
+        compatible = "zmk,kscan-gpio-direct";
+        wakeup-source;
+        input-gpios = <&pro_micro 18 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>;
+    };
+
+    kscan0: kscan0 {
+        compatible = "zmk,kscan-composite";
+        wakeup-source;
+        rows = <9>;
+        columns = <9>;
+
+        matrix {
+            kscan = <&kscan_matrix>;
+        };
+
+        encoder_push {
+            kscan = <&kscan_direct>;
+            row-offset = <8>;
+        };
+    };
+};
+
+&physical_layout_byrantk_lp63 {
+    kscan = <&kscan0>;
+};
+
+&encoder0 {
+    a-gpios = <&pro_micro 0 (GPIO_ACTIVE_HIGH | GPIO_PULL_UP)>;   /* D0 = P0.08 */
+    b-gpios = <&pro_micro 1 (GPIO_ACTIVE_HIGH | GPIO_PULL_UP)>;   /* D1 = P0.06 */
+    status = "okay";
+};
+
+
+/* D0/D1 are used by the encoder, so the UART on those pins is turned off. */
+&uart0 {
+    status = "disabled";
+};
+

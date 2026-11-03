@@ -1,0 +1,10 @@
+/ {
+    behaviors {
+        /* name must stay <= 8 characters: it is sent to the peripheral by name */
+        rgb_esb: rgb_esb {
+            compatible = "kerf,behavior-rgb-esb";
+            #binding-cells = <2>;
+            display-name = "Underglow (ESB)";
+        };
+    };
+};

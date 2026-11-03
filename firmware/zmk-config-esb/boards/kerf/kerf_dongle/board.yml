@@ -1,0 +1,6 @@
+board:
+  name: kerf_dongle
+  full_name: kerf dongle (nRF52833 USB receiver)
+  vendor: kerf
+  socs:
+    - name: nrf52833

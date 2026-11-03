@@ -1,0 +1,8 @@
+/* LP63 keyboard as ESB peripheral of the dongle (pipe 0) */
+#include "../../boards/shields/byrantk_lp63/esb_link.dtsi"
+
+/ {
+    chosen {
+        zmk,esb-self = &lp63_keyboard;
+    };
+};

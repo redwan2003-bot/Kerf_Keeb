@@ -1,0 +1,7 @@
+name: Build ZMK firmware (ESB)
+on: [push, pull_request, workflow_dispatch]
+
+jobs:
+  build:
+    # Same ZMK revision as config/west.yml (ESB module needs Zephyr 4.1 / ZMK main)
+    uses: zmkfirmware/zmk/.github/workflows/build-user-config.yml@753d8b467125fe860eec05ee71cb7ebefa08fba6

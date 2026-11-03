@@ -1,0 +1,21 @@
+if(CONFIG_KERF_DONGLE_STATUS_LED)
+  zephyr_library()
+  zephyr_library_include_directories(${APPLICATION_SOURCE_DIR}/include)
+  zephyr_library_sources(src/dongle_status_led.c)
+endif()
+
+if(CONFIG_KERF_LED_SPLIT)
+  zephyr_library_named(kerf_led_split)
+  zephyr_library_include_directories(${CMAKE_CURRENT_LIST_DIR}/include)
+  zephyr_library_sources(src/kerf_led_split.c)
+endif()
+
+if(CONFIG_KERF_BATLED)
+  zephyr_library_named(kerf_batled)
+  zephyr_library_include_directories(${CMAKE_CURRENT_LIST_DIR}/include ${APPLICATION_SOURCE_DIR}/include)
+  zephyr_library_sources(src/kerf_batled.c)
+endif()
+
+zephyr_library_named(kerf_behavior_batled)
+zephyr_library_include_directories(${CMAKE_CURRENT_LIST_DIR}/include ${APPLICATION_SOURCE_DIR}/include)
+zephyr_library_sources(src/behaviors/behavior_batled.c)

@@ -1,0 +1,10 @@
+/ {
+    behaviors {
+        /* name must stay <= 8 characters: a dongle sends it to the keyboard by name */
+        batled: batled {
+            compatible = "kerf,behavior-batled";
+            #binding-cells = <0>;
+            display-name = "Battery LED";
+        };
+    };
+};

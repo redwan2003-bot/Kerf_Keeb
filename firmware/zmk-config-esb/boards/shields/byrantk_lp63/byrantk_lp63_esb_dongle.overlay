@@ -1,0 +1,3 @@
+/* LP63 USB dongle, ESB central: keyboard -> dongle over 2.4 GHz ESB, dongle -> PC over USB */
+#include "byrantk_lp63_dongle.overlay"
+#include "esb_link.dtsi"

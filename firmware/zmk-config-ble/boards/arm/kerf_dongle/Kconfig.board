@@ -1,0 +1,5 @@
+# kerf dongle: custom nRF52833 USB-C receiver for the ByranTK LP63
+
+config BOARD_KERF_DONGLE
+    bool "kerf dongle (nRF52833)"
+    depends on SOC_NRF52833_QDAA

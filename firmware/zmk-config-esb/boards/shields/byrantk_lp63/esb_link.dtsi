@@ -1,0 +1,37 @@
+/*
+ * ESB (Nordic Enhanced ShockBurst) link shared by the LP63 keyboard and the dongle.
+ * Both sides MUST include this exact file. Change base-address to give your set a
+ * private address (4 bytes, avoid repeating the same byte).
+ */
+
+#include <behaviors/rgb_esb.dtsi>
+/ {
+    esb_link: esb_link {
+        compatible = "zmk,split-esb";
+        base-address = [58 14 D3 8C];
+        /* --- range + latency balance ---------------------------------------------------
+         * 1 Mbps: ~3-4 dB better receiver sensitivity than 2 Mbps (~40-60 % more open-air
+         * range). A key packet + ACK still takes only ~0.4 ms on air, far below the 1 ms
+         * USB poll, so typing latency is effectively unchanged. */
+        bitrate-kbps = <1000>;
+        tx-power-dbm = <8>;          /* nRF52 maximum, both ends */
+        use-fast-ramp-up;            /* 40 us radio ramp-up instead of 140 us */
+        address-length = <5>;        /* full 5-byte address: best selectivity vs noise */
+        crc-bits = <16>;             /* strongest CRC: no corrupted packets accepted */
+        /* Up to 15 hardware retries (radio maximum). The keyboard adapts the live count
+         * from link quality, so a clean link keeps ~2 retries and low tail latency; only a
+         * weak link at the edge of range spends the full budget instead of dropping keys. */
+        retransmit-count = <15>;
+        retransmit-delay-us = <600>; /* fits an ACK carrying a full 48-byte payload at 1 Mbps */
+        /* hop-channels left at the module default: 74-83 (2474-2483 MHz), above Wi-Fi ch 11,
+         * with a boot survey and adaptive masking of bad channels. */
+
+        peripherals {
+            lp63_keyboard: peripheral_lp63 {
+                pipe = <0>;
+                prefix = <0x9A>;
+                weight = <1>;
+            };
+        };
+    };
+};

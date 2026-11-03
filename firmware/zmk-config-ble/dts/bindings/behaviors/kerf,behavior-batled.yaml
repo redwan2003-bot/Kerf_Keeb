@@ -1,0 +1,3 @@
+description: Show the keyboard battery level on the LP63 indicator LED (LED9) for a few seconds.
+compatible: "kerf,behavior-batled"
+include: zero_param.yaml

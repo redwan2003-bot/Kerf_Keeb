@@ -1,0 +1,11 @@
+file_format: "1"
+id: kerf_dongle
+name: kerf dongle
+type: board
+arch: arm
+features:
+  - keys
+outputs:
+  - usb
+url: https://oshwlab.com
+exposes: []

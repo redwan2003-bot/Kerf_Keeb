@@ -1,0 +1,11 @@
+identifier: kerf_dongle
+name: kerf dongle
+type: mcu
+arch: arm
+toolchain:
+  - zephyr
+  - gnuarmemb
+supported:
+  - usb_device
+  - ble
+  - gpio

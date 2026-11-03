@@ -1,0 +1,30 @@
+# ByranTK LP63 — ESB (Nordic Enhanced ShockBurst) firmware set
+# ZMK main @753d8b4 (Zephyr 4.1) + damex/zmk-feature-split-esb v0.8.14
+#
+# Order of use:
+#   1. settings_reset (keyboard)   -> flash to the keyboard once when coming from the BLE firmware
+#   2. kerf_dongle_settings_reset  -> flash to the dongle once when coming from the BLE firmware
+#   3. kerf_dongle_esb             -> flash to the kerf dongle (or nice_nano_esb_dongle on a nice!nano)
+#   4. byrantk_lp63_esb            -> flash to the keyboard; it links to the dongle by itself (no pairing)
+---
+include:
+  - board: nice_nano//zmk
+    shield: byrantk_lp63 nice_view
+    snippet: byrantk-lp63-esb
+    artifact-name: byrantk_lp63_esb
+
+  - board: kerf_dongle
+    shield: byrantk_lp63_esb_dongle
+    artifact-name: kerf_dongle_esb
+
+  - board: nice_nano//zmk
+    shield: byrantk_lp63_esb_dongle
+    artifact-name: nice_nano_esb_dongle
+
+  - board: nice_nano//zmk
+    shield: settings_reset
+    artifact-name: settings_reset_nice_nano
+
+  - board: kerf_dongle
+    shield: settings_reset
+    artifact-name: kerf_dongle_settings_reset

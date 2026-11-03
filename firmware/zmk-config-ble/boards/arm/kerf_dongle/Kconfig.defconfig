@@ -1,0 +1,29 @@
+if BOARD_KERF_DONGLE
+
+config BOARD
+    default "kerf_dongle"
+
+config ZMK_KEYBOARD_NAME
+    default "kerf dongle"
+
+if USB_DEVICE_STACK
+
+config USB_NRFX
+    default y
+
+endif # USB_DEVICE_STACK
+
+config BT_CTLR
+    default BT
+
+config ZMK_USB
+    default y
+
+config ZMK_BLE
+    default y
+
+# The dongle is always USB powered: no battery measurement
+config ZMK_BATTERY_REPORTING
+    default n
+
+endif # BOARD_KERF_DONGLE

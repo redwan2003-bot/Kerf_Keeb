@@ -1,0 +1,12 @@
+if BOARD_KERF_DONGLE
+
+config ZMK_KEYBOARD_NAME
+    default "kerf dongle"
+
+config ZMK_USB
+    default y
+
+# The dongle is USB powered: it has no battery of its own to measure.
+# (ESB builds still turn ZMK_BATTERY_REPORTING on to receive the keyboard's level.)
+
+endif # BOARD_KERF_DONGLE

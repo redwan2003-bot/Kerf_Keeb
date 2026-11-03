@@ -1,0 +1,68 @@
+/*
+ * ByranTK LP63 — 64-key column-aligned grid (13 x 5, 2U space)
+ *
+ * Physical layout (keymap order):
+ *  Esc   1    2    3    4    5    6    7    8    9    0    -    Bksp
+ *  Tab   Q    W    E    R    T    Y    U    I    O    P    [    ]
+ *  Caps  A    S    D    F    G    H    J    K    L    ;    '    Enter
+ *  Shift Z    X    C    V    B    N    M    ,    .    /    Up   Shift
+ *  Ctrl  Win  Alt  Fn  [Space ]  =    \    `    Del  Shot Left Down Right
+ *
+ * Shot = Win+Shift+S (snip), Fn+Shot = Print Screen.
+ * Fn + Esc: battery level on the LED right of Up (1 s on a tap, or while held)
+ *   (green > 50 %, yellow 20-50 %, red < 20 %; blinks red when low).
+ *
+ * Dongle (BLE central) copy of byrantk_lp63.keymap - keep the two files identical.
+ * Encoder: volume on Base, underglow brightness while Fn is held.
+ * Encoder push: Mute; Fn + push: Play/Pause (key position 66, D18). Fn + M: Mute. Fn + Z: underglow on/off.
+ * Fn + G/H: saturation down/up. Fn + J/K: effect speed down/up.
+ */
+
+#include <behaviors.dtsi>
+#include <dt-bindings/zmk/keys.h>
+#include <dt-bindings/zmk/bt.h>
+#include <dt-bindings/zmk/outputs.h>
+#include <dt-bindings/zmk/rgb.h>
+
+#define BASE 0
+#define FN   1
+
+/ {
+    behaviors {
+        rgb_enc: rgb_encoder {
+            compatible = "zmk,behavior-sensor-rotate";
+            #sensor-binding-cells = <0>;
+            bindings = <&rgb_ug RGB_BRI>, <&rgb_ug RGB_BRD>;
+        };
+    };
+
+    keymap {
+        compatible = "zmk,keymap";
+
+        default_layer {
+            display-name = "Base";
+            bindings = <
+    &kp ESC    &kp N1   &kp N2   &kp N3   &kp N4    &kp N5   &kp N6    &kp N7   &kp N8    &kp N9    &kp N0   &kp LBKT  &kp RBKT
+    &kp TAB    &kp Q    &kp W    &kp E    &kp R     &kp T    &kp Y     &kp U    &kp I     &kp O     &kp P    &kp MINUS &kp BSPC
+    &kp CAPS   &kp A    &kp S    &kp D    &kp F     &kp G    &kp H     &kp J    &kp K     &kp L     &kp SEMI &kp SQT   &kp RET
+    &kp LSHFT  &kp Z    &kp X    &kp C    &kp V     &kp B    &kp N     &kp M    &kp COMMA &kp DOT   &kp FSLH &kp RSHFT &kp UP
+    &kp LCTRL  &kp LGUI &kp LALT &mo FN   &kp SPACE          &kp EQUAL &kp BSLH &kp GRAVE &kp DEL   &kp LG(LS(S)) &kp LEFT &kp DOWN  &kp RIGHT
+    &kp C_MUTE
+            >;
+            sensor-bindings = <&inc_dec_kp C_VOL_UP C_VOL_DN>;
+        };
+
+        fn_layer {
+            display-name = "Fn";
+            bindings = <
+    &batled     &kp F1          &kp F2          &kp F3          &kp F4          &kp F5       &kp F6       &kp F7  &kp F8            &kp F9            &kp F10    &kp F11   &kp F12
+    &trans     &bt BT_SEL 0    &bt BT_SEL 1    &bt BT_SEL 2    &bt BT_SEL 3    &bt BT_SEL 4 &trans       &trans  &trans            &trans            &kp PSCRN  &kp HOME  &kp END
+    &trans     &out OUT_USB    &out OUT_BLE    &out OUT_TOG    &trans          &rgb_ug RGB_SAD &rgb_ug RGB_SAI &rgb_ug RGB_SPD &rgb_ug RGB_SPI &trans  &trans     &trans    &trans
+    &trans     &rgb_ug RGB_TOG &rgb_ug RGB_EFF &rgb_ug RGB_HUI &rgb_ug RGB_HUD &bootloader  &sys_reset   &kp C_MUTE &rgb_ug RGB_BRD   &rgb_ug RGB_BRI   &trans     &trans    &kp PG_UP
+    &trans     &trans          &trans          &trans          &trans                       &trans       &trans  &trans            &bt BT_CLR        &kp PSCRN     &kp HOME   &kp PG_DN &kp END
+    &kp C_PP
+            >;
+            sensor-bindings = <&rgb_enc>;
+        };
+    };
+};

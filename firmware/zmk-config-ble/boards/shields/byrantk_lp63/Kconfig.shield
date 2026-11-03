@@ -1,0 +1,5 @@
+config SHIELD_BYRANTK_LP63
+    def_bool $(shields_list_contains,byrantk_lp63)
+
+config SHIELD_BYRANTK_LP63_DONGLE
+    def_bool $(shields_list_contains,byrantk_lp63_dongle)

@@ -1,0 +1,6 @@
+config BOARD_KERF_DONGLE
+    select SOC_NRF52833_QDAA
+    select ZMK_BOARD_COMPAT
+    imply RETAINED_MEM
+    imply RETENTION
+    imply RETENTION_BOOT_MODE

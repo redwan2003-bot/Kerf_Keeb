@@ -1,0 +1,6 @@
+description: |
+  Underglow control that is sent to the keyboard the key came from.
+  Needed on an ESB dongle: ESB centrals cannot broadcast BEHAVIOR_LOCALITY_GLOBAL
+  behaviors such as &rgb_ug, so this forwards the same commands per event source.
+compatible: "kerf,behavior-rgb-esb"
+include: two_param.yaml

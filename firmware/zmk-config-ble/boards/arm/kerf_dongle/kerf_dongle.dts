@@ -1,0 +1,100 @@
+/*
+ * kerf dongle — nRF52833-QDAA USB-C receiver for the ByranTK LP63
+ * Copyright (c) 2026 Redwan. SPDX-License-Identifier: MIT
+ *
+ * Hardware summary (PCB rev 2):
+ *   - USB powered: VBUS -> VDDH + VBUS, internal LDO (REG0 -> VDD), DC/DC not fitted
+ *   - 32 MHz crystal only (P0.00/XL1 tied to GND) -> internal RC low-frequency clock
+ *   - RGB status LED D1 (common anode to VDD), each colour active LOW:
+ *       red   P0.31 (via R3, D1 pin 2)
+ *       green P0.30 (via R4, D1 pin 3)
+ *       blue  P0.29 (via R5, D1 pin 4)
+ *     If a colour turns out different on your LED batch, swap the gpios below.
+ *   - nRESET (P0.18) on SW1 + test pad; SWD on test pads
+ */
+
+/dts-v1/;
+#include <nordic/nrf52833_qdaa.dtsi>
+#include <dt-bindings/gpio/gpio.h>
+
+/ {
+    model = "kerf dongle";
+    compatible = "kerf,dongle";
+
+    chosen {
+        zephyr,code-partition = &code_partition;
+        zephyr,sram = &sram0;
+        zephyr,flash = &flash0;
+        zmk,battery = <0>;
+    };
+
+    leds {
+        compatible = "gpio-leds";
+        led_red: led_0 {
+            gpios = <&gpio0 31 GPIO_ACTIVE_LOW>;
+            label = "Red: keyboard battery low";
+        };
+        led_green: led_1 {
+            gpios = <&gpio0 30 GPIO_ACTIVE_LOW>;
+            label = "Green: Caps Lock";
+        };
+        led_blue: led_2 {
+            gpios = <&gpio0 29 GPIO_ACTIVE_LOW>;
+            label = "Blue: keyboard link";
+        };
+    };
+
+    aliases {
+        led-red = &led_red;
+        led-green = &led_green;
+        led-blue = &led_blue;
+    };
+};
+
+&gpiote {
+    status = "okay";
+};
+
+&gpio0 {
+    status = "okay";
+};
+
+&gpio1 {
+    status = "okay";
+};
+
+zephyr_udc0: &usbd {
+    compatible = "nordic,nrf-usbd";
+    status = "okay";
+};
+
+&flash0 {
+    /*
+     * Layout for the Adafruit nRF52 UF2 bootloader with SoftDevice S140 v7.x
+     * (nRF52833, 512 KB flash). The SoftDevice area is unused by Zephyr but must
+     * stay reserved so the bootloader can start the application.
+     */
+    partitions {
+        compatible = "fixed-partitions";
+        #address-cells = <1>;
+        #size-cells = <1>;
+
+        sd_partition: partition@0 {
+            label = "softdevice";
+            reg = <0x00000000 0x00027000>;
+        };
+        code_partition: partition@27000 {
+            label = "code_partition";
+            reg = <0x00027000 0x00046000>;
+        };
+        /* inside the bootloader's 7-page reserved app-data area, so settings survive UF2 updates */
+        storage_partition: partition@6d000 {
+            label = "storage";
+            reg = <0x0006d000 0x00007000>;
+        };
+        boot_partition: partition@74000 {
+            label = "adafruit_boot";
+            reg = <0x00074000 0x0000c000>;
+        };
+    };
+};

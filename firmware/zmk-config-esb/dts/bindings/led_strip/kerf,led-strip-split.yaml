@@ -1,0 +1,13 @@
+description: |
+  Exposes the first chain-length pixels of a real LED strip as a separate strip
+  (for ZMK underglow) and keeps the rest of the chain for status LEDs.
+compatible: "kerf,led-strip-split"
+properties:
+  strip:
+    type: phandle
+    required: true
+    description: the real LED strip (longer chain)
+  chain-length:
+    type: int
+    required: true
+    description: number of pixels shown to the user of this strip
