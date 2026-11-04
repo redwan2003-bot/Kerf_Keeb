@@ -13,12 +13,11 @@ CSK=4.2         # countersink diameter at top (M2 flat head)
 X0,X1,Y0,Y1=-40*MIL,9800*MIL,40*MIL,-3790*MIL   # plate outline (left/top/bottom = PCB edge, right stops before the nice!nano column)
 R=3.0
 TAB=(9700*MIL,10540*MIL,-2980*MIL,-3790*MIL)   # bottom-right tab under the Right-arrow key (x 9.75U..10.5U)
-NOTCH=(9690*MIL,9870*MIL,-2770*MIL,-3045*MIL)  # window over LED9 (WS2812B-Mini 3535, top side, hand-soldered, at x 9775, y -2900) incl. its pads
 keys=[(375+750*c,-375-750*r) for r in range(4) for c in range(13)]
 keys+=[(x,-3375) for x in (375,1125,1875,2625,3750,4875,5625,6375,7125,7875,8625,9375,10125)]   # 7875 = screenshot key (SW68); arrow cluster ends 1U right of the grid
 holes=[(x,y) for x in (1500,4500,5250,8250) for y in (-750,-3000)]
 K=[(x*MIL,y*MIL) for x,y in keys]; H=[(x*MIL,y*MIL) for x,y in holes]
-def build(keys_mm,holes_mm,x0,x1,y0,y1,cut=CUT,tab=None,notch=None):
+def build(keys_mm,holes_mm,x0,x1,y0,y1,cut=CUT,tab=None):
     w,h=x1-x0,y0-y1
     p=cq.Workplane("XY").center((x0+x1)/2,(y0+y1)/2).rect(w,h).extrude(T)
     if tab:   # extra 1U tab at the bottom-right for the Right-arrow key
@@ -26,9 +25,6 @@ def build(keys_mm,holes_mm,x0,x1,y0,y1,cut=CUT,tab=None,notch=None):
         p=p.union(cq.Workplane("XY").center((tx0+tx1)/2,(ty0+ty1)/2).rect(tx1-tx0,ty0-ty1).extrude(T))
     p=p.edges("|Z").fillet(R)
     p=p.faces(">Z").edges().chamfer(0.4)
-    if notch:   # keep the battery LED uncovered
-        nx0,nx1,ny0,ny1=notch
-        p=p.cut(cq.Workplane("XY").center((nx0+nx1)/2,(ny0+ny1)/2).rect(nx1-nx0,ny0-ny1).extrude(T))
     p=p.cut(cq.Workplane("XY").pushPoints(keys_mm).rect(POCKET,POCKET).extrude(T-CLIP))
     p=p.cut(cq.Workplane("XY").pushPoints(keys_mm).rect(cut,cut).extrude(T))
     if holes_mm:
@@ -39,7 +35,7 @@ def build(keys_mm,holes_mm,x0,x1,y0,y1,cut=CUT,tab=None,notch=None):
             p=p.cut(cq.Workplane("XY").add(cone))
     return p
 if __name__=="__main__":
-    plate=build(K,H,X0,X1,Y0,Y1,tab=TAB,notch=NOTCH)
+    plate=build(K,H,X0,X1,Y0,Y1,tab=TAB)
     cq.exporters.export(plate,"lp63_plate.step")
     cq.exporters.export(plate,"lp63_plate.stl",tolerance=0.02,angularTolerance=0.1)
     bb=plate.val().BoundingBox(); print("plate",round(bb.xlen,2),"x",round(bb.ylen,2),"x",round(bb.zlen,2),"mm, keys",len(K))

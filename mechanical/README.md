@@ -12,7 +12,7 @@ All parts are parametric CadQuery scripts with STEP/STL exports. Coordinates com
 | Thickness | 2.0 mm total, 1.2 mm clip rim around each cut-out (16 mm pocket underneath) |
 | Cut-outs | 65 × 14.1 mm (14.0 nominal + FDM allowance) |
 | Holes | 8 × M2 countersunk, matching the PCB |
-| Details | Notch over LED9 so the battery LED shows; the plate stops before the controller column |
+| Details | The plate stops before the controller column |
 
 **Print the fit coupon first** (`lp63_plate_fit_coupon.stl`, a 3 × 3 key block). If KS-33 switches are loose or too tight, change `CUT` in `lp63_plate_cadquery.py` and re-export.
 

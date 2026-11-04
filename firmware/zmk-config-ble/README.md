@@ -2,10 +2,10 @@
 
 65-key column-aligned grid (13 × 5, all 1U except a 2U space), Gateron KS-33 low-profile
 switches, a nice!nano v2-compatible nRF52840, a 74HC595 row driver, a nice!view, an Alps EC12 encoder
-with push, 8 × WS2812 underglow and a WS2812B-Mini battery LED (LED9). Bluetooth + USB, with an
+with push and 8 × WS2812 underglow. Bluetooth + USB, with an
 optional USB dongle (the custom nRF52833 kerf dongle, or a spare nice!nano).
 
-> **Current: firmware v11 (2026-10-28).** The numbered list at the end of this file is the change
+> **Current: firmware v12 (2026-11-04).** The numbered list at the end of this file is the change
 > history. Where it disagrees with this section, this section is current.
 
 ## Layout
@@ -25,7 +25,6 @@ Snip = Win + Shift + S. The knob turns for volume (Fn + turn: underglow brightne
 
 | Keys | Action |
 |---|---|
-| Esc | Battery level on LED9: tap = 1 s, hold = stays on (max 10 s). Green > 50 %, yellow 20-50 %, red < 20 %; blinks red at 10 % or below on battery |
 | 1 … 0, [, ] | F1 … F12 |
 | Q W E R T | Bluetooth host profile 1–5 |
 | A / S / D | Output: USB / Bluetooth / toggle |
@@ -133,3 +132,6 @@ Fn + B on the keyboard while connected) and copy the new UF2.
 12. Snip key (SW68, column D21): Win + Shift + S; Fn + Snip = Print Screen.
 13. LED9 battery indicator (`&batled` on Fn + Esc), driven by `src/kerf_batled.c` through the same
     WS2812 chain; underglow sees only LED1-8 (`src/kerf_led_split.c`).
+14. Battery LED removed (2026-11-04): LED9 is no longer on the PCB. `&batled`, `kerf_batled.c` and
+    `kerf_led_split.c` are gone, the WS2812 chain is back to 8 pixels, and Fn + Esc is plain Esc.
+    Battery level is still reported to the host and the dongle.

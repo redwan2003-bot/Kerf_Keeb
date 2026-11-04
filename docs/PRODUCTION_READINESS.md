@@ -1,6 +1,6 @@
 # Production readiness
 
-As of 2026-10-28, both boards pass every automated check with **0 errors and 0 warnings**. What's left is the final Gerber export and testing on real hardware.
+As of 2026-11-04, both boards pass every automated check with **0 errors and 0 warnings**. What's left is the final Gerber export and testing on real hardware.
 
 ## Final audit
 
@@ -8,8 +8,8 @@ As of 2026-10-28, both boards pass every automated check with **0 errors and 0 w
 |---|---|---|
 | PCB DRC (strict) | 0 errors | 0 errors |
 | Schematic DRC | 0 errors, 0 warnings | 0 errors, 0 warnings |
-| Schematic ⇄ PCB connections | identical: 108 nets, 389 pins | identical: 26 nets, 108 pins |
-| Parts, footprints and LCSC numbers | 164 parts, no mismatches | 32 parts, no mismatches |
+| Schematic ⇄ PCB connections | identical: 107 nets, 385 pins | identical: 26 nets, 108 pins |
+| Parts, footprints and LCSC numbers | 163 parts, no mismatches | 32 parts, no mismatches |
 | BOM/CPL check | pass | pass |
 | Firmware | all targets build | all targets build |
 
@@ -23,6 +23,7 @@ As of 2026-10-28, both boards pass every automated check with **0 errors and 0 w
 | Silkscreen ID and version (`KERF kerf_keeb LP63 v1.0`, `DONGLE r3`), plus a `PWR` label | Both |
 | Encoder push wired to D18 (ENC_SW); firmware: press = Mute, Fn + press = Play/Pause | Keyboard |
 | Spare/backup PCBs renamed `ARCHIVE_DO_NOT_ORDER_…` | Project |
+| Top-side battery LED (LED9) removed from the schematic, PCB, firmware and plate; the LED_VCC trunk to LED7 kept, LED8 DOUT marked no-connect | Keyboard |
 
 ## Still to do before ordering
 
@@ -35,7 +36,7 @@ As of 2026-10-28, both boards pass every automated check with **0 errors and 0 w
 
 - [ ] Battery polarity, sleep current, charging.
 - [ ] Dongle: SWD bootloader flash, USB enumeration, 3.3 V rail.
-- [ ] All 65 keys, the knob (turn and press), the nice!view, LED9 and the underglow.
+- [ ] All 65 keys, the knob (turn and press), the nice!view and the underglow.
 - [ ] BLE and 2.4 GHz range (C20 is spare for antenna tuning).
 - [ ] Slide switch: confirm which position is ON, then add an ON arrow to the silkscreen in the next revision.
 - [ ] Plate fit.

@@ -18,7 +18,6 @@ Use the `_JLC` BOM/CPL files from this repo, not EasyEDA's own BOM export. Never
   - 65 × Gateron KS-33 hot-swap sockets
   - the nice!nano v2 (U1), with the nice!view on its header (J1)
   - the EC12 encoder (SW65)
-  - LED9: WS2812B-Mini 3535, LCSC C114583, top side right of ↑
 
 ## Dongle PCB
 

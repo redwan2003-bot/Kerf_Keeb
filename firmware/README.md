@@ -11,7 +11,7 @@ Each folder is a complete ZMK user config. Push either one on its own as a GitHu
 
 ## Ready-made files (`prebuilt/`)
 
-Built on 2026-10-28 (BLE v11, ESB v7, including the encoder push).
+Built on 2026-11-04 (BLE v12, ESB v8): encoder push, 8-LED underglow chain (battery LED removed).
 
 **`prebuilt/ble/`**
 
@@ -63,8 +63,6 @@ After that, double-tap SW1 and a `KERFBOOT` drive appears.
 
 | File | What it does |
 |---|---|
-| `src/kerf_led_split.c` | Splits the 9-LED chain: underglow sees LED1–8, and LED9 is kept for the battery indicator |
-| `src/kerf_batled.c`, `src/behaviors/behavior_batled.c` | The `&batled` key (Fn + Esc): shows the battery colour on LED9 and blinks red when low |
 | `src/dongle_status_led.c` | kerf dongle RGB LED: link state, Caps Lock, keyboard battery |
 | `src/behaviors/behavior_rgb_esb.c` (ESB) | `&rgb_esb`: underglow keys pressed on the dongle side are sent over ESB to the keyboard |
 | `src/esb_status_screen.c` (ESB) | nice!view screen with ESB link quality |

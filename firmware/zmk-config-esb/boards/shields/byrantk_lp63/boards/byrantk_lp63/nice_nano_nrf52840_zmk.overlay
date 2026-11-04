@@ -84,12 +84,12 @@ nice_view_spi: &spi0 { };
 
 #include <dt-bindings/led/led.h>
 &spi1 {
-    led_strip_hw: ws2812@0 {
+    led_strip: ws2812@0 {
         compatible = "worldsemi,ws2812-spi";
         reg = <0>;
         spi-max-frequency = <4000000>;
 
-        chain-length = <9>;   /* LED1-LED8 underglow + LED9 battery indicator */
+        chain-length = <8>;   /* LED1-LED8 underglow (bottom side) */
         spi-one-frame = <0x70>;
         spi-zero-frame = <0x40>;
         color-mapping = <LED_COLOR_ID_GREEN
@@ -97,14 +97,7 @@ nice_view_spi: &spi0 { };
                          LED_COLOR_ID_BLUE>;
     };
 };
-/* Underglow sees only LED1-LED8; LED9 (right of the Up arrow) is the battery
- * indicator, driven by src/kerf_batled.c through the same data line. */
 / {
-    led_strip: led_strip_underglow {
-        compatible = "kerf,led-strip-split";
-        strip = <&led_strip_hw>;
-        chain-length = <8>;
-    };
     chosen {
         zmk,underglow = &led_strip;
     };

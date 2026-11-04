@@ -14,11 +14,11 @@ choice EC11_TRIGGER_MODE
     default EC11_TRIGGER_GLOBAL_THREAD
 endchoice
 
-# Battery level is needed on the keyboard for the LED9 indicator
+# Battery level reported to the host / dongle (and shown on the nice!view)
 config ZMK_BATTERY_REPORTING
     default y
 
-# 8x WS2812 underglow + LED9 battery indicator on spi1
+# 8x WS2812 underglow on spi1
 config ZMK_RGB_UNDERGLOW
     default y
 

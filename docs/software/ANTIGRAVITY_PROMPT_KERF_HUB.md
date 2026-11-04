@@ -30,8 +30,7 @@ wrong (for example a ZMK API works differently), write the problem and your prop
 
 - `zmk-config-byrantk_lp63/` — BLE firmware config, ZMK **v0.3** (Zephyr 3.5).
 - `zmk-config-esb/` — ESB 2.4 GHz firmware config, ZMK main `753d8b467125fe860eec05ee71cb7ebefa08fba6` + `damex/zmk-feature-split-esb` v0.8.14 (Zephyr 4.1).
-- Both already contain working custom code you must keep working: `kerf_led_split.c` (9-pixel chain, underglow sees 8),
-  `&batled` (LED9 battery indicator: tap 1 s / hold until release, max 10 s), `dongle_status_led.c`, `&rgb_esb` (ESB repo).
+- Both already contain working custom code you must keep working: `dongle_status_led.c` and `&rgb_esb` (ESB repo).
 - Build targets that must keep building (BLE repo): `nice_nano_v2` + shield `byrantk_lp63 nice_view` (standalone),
   same + snippet `byrantk-lp63-as-peripheral`, `nice_nano_v2` + `byrantk_lp63_dongle`, `kerf_dongle` + `byrantk_lp63_dongle`.
   (ESB repo): `nice_nano//zmk` + `byrantk_lp63 nice_view` + snippet `byrantk-lp63-esb`, `nice_nano//zmk` + `byrantk_lp63_esb_dongle`,
@@ -69,7 +68,7 @@ Do **Phase 1** from §7 only:
   support, ESB module compatibility, Zephyr version, nRF52833 `kerf_dongle` board support).
 - Enable ZMK Studio (`CONFIG_ZMK_STUDIO=y`, `studio-rpc-usb-uart` snippet, `&studio_unlock` on Fn+Bksp) on the
   central side of every configuration (standalone keyboard and both dongles).
-- Keep `&batled`, `kerf_led_split`, `&rgb_esb` and the dongle status LED working.
+- Keep `&rgb_esb` and the dongle status LED working.
 - Write the test steps I will run with ZMK's own Studio app: remap a key, power-cycle, confirm it stuck; repeat
   through the BLE dongle and the ESB dongle.
 
@@ -88,7 +87,7 @@ Begin by reading the plan and both repos, then send me your Phase 1 plan artifac
 
 **Phase 3 — Kerf protocol + settings**
 > Read the plan §4.1–§4.4 and §7 phase 3. Create `kerf-protocol` (proto + ts-proto + nanopb) and the `zmk-kerf` module
-> with USB vendor raw-HID and BLE GATT transports, and the core, lighting (underglow + LED9/batled runtime config),
+> with USB vendor raw-HID and BLE GATT transports, and the core, lighting (underglow runtime config),
 > and power (debounce, idle/sleep) services with Zephyr settings under `kerf/…`. Add the matching app pages. Keep every
 > existing build target green. Plan first.
 

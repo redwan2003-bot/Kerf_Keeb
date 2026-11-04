@@ -40,7 +40,6 @@ It works in three ways:
 | **Knob** | Alps EC12 encoder. Turn = volume, Fn + turn = underglow brightness, press = mute, Fn + press = play/pause |
 | **Display** | nice!view (Sharp memory LCD): battery, connection and layer. The ESB build adds link quality (RSSI, channel, retries) |
 | **Lighting** | 8 × WS2812B underglow, with a MOSFET switch that cuts their power when off |
-| **Battery LED** | LED9 beside the ↑ key. Fn + Esc shows the charge: green > 50 %, yellow 20–50 %, red < 20 %; it blinks red at ≤ 10 % |
 | **Wireless** | BLE 5 to up to 5 hosts, or the kerf dongle (BLE or Nordic ESB 2.4 GHz) |
 | **Controller** | nice!nano v2 or a compatible "Pro Micro nRF52840", plus a 74HC595 row driver |
 | **Power** | 1-cell LiPo on a JST-PH connector, hard power switch, reset button, USB-C charging through the controller |
@@ -81,7 +80,7 @@ kerf_keeb/
 | Size | 272.8 × 97.3 mm | 18.0 × 39.4 mm |
 | Layers | 2 | 4 (JLC04161H-7628 stack-up) |
 | MCU | nice!nano v2 / Pro Micro nRF52840 (socketed module) | nRF52833-QDAA (on board) |
-| Assembly | JLC assembles 95 bottom-side SMD parts; you hand-solder sockets, controller, display, encoder and LED9 | JLC assembles 31 top-side parts |
+| Assembly | JLC assembles 95 bottom-side SMD parts; you hand-solder sockets, controller, display and encoder | JLC assembles 31 top-side parts |
 | Checks | DRC 0, schematic DRC 0 errors / 0 warnings, schematic ⇄ PCB nets identical | the same |
 
 Full details are in [hardware/README.md](hardware/README.md).
@@ -99,7 +98,6 @@ The ready-made files are in [firmware/prebuilt](firmware/prebuilt). To flash, do
 
 | Keys | Action |
 |---|---|
-| Esc | Battery level on LED9 (tap = 1 s, hold = stays on) |
 | 1 … 0, [, ] | F1 … F12 |
 | Q W E R T | Bluetooth host 1–5 (BLE build) |
 | A / S / D | Output: USB / Bluetooth / toggle (BLE build) |
@@ -118,7 +116,7 @@ The ready-made files are in [firmware/prebuilt](firmware/prebuilt). To flash, do
 
 - [x] Schematic and PCB for the keyboard and dongle, DRC-clean, schematic ⇄ PCB verified
 - [x] JLCPCB BOM/CPL files checked (all parts exist, designators match the PCB)
-- [x] BLE and ESB firmware, battery LED, dongle status LED, encoder push
+- [x] BLE and ESB firmware, dongle status LED, encoder push
 - [x] Printable switch plate with fit coupon, and an EC12 knob
 - [ ] Final Gerber export and the EasyEDA project published on OSHWLab
 - [ ] First 5 boards built and tested (keys, power, radio range, sleep current)
@@ -128,7 +126,7 @@ The ready-made files are in [firmware/prebuilt](firmware/prebuilt). To flash, do
 ## Build your own
 
 1. Order the PCBs: follow [docs/ORDERING.md](docs/ORDERING.md).
-2. Hand-solder the 65 KS-33 hot-swap sockets, the controller, the nice!view header, the EC12 encoder and LED9.
+2. Hand-solder the 65 KS-33 hot-swap sockets, the controller, the nice!view header and the EC12 encoder.
 3. Print the plate fit coupon first, then the plate: see [mechanical/README.md](mechanical/README.md).
 4. Flash the firmware: see [firmware/README.md](firmware/README.md).
 5. Check the battery polarity at J2 against your cell before plugging it in. JST-PH LiPo leads are not standardised.

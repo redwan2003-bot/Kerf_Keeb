@@ -4,7 +4,7 @@
 > Owner: Redwan · Plan date: 2026-10-22 · Status: approved plan, not started.
 
 Kerf Hub is a web app plus a thin desktop wrapper. It speaks **ZMK Studio's protocol** for the keymap and a small
-**Kerf protocol** for everything else: lighting, battery LED, macros, profiles, display, power and updates. The
+**Kerf protocol** for everything else: lighting, macros, profiles, display, power and updates. The
 keyboard already runs ZMK, so about half of what commercial hubs (Razer Synapse, Logitech G HUB, MCHOSE M HUB) do is
 free. This plan builds the other half in about **19 weeks of part-time work (10–15 h/week)**.
 
@@ -24,11 +24,11 @@ free. This plan builds the other half in about **19 weeks of part-time work (10�
 | Encoder | A = D0 (P0.08), B = D1 (P0.06); UART disabled |
 | Display | nice!view, 160 × 68 px, 1-bit Sharp memory LCD (LS011B7DH03), < 10 µA, 30 Hz, SPI0 CS = D15 |
 | 74HC595 latch | SPI0 CS = D14 |
-| Underglow | 8 × WS2812B (LED1–LED8) + LED9 battery indicator (WS2812B-Mini) = 9-pixel chain on SPI1 MOSI = D19 (P0.02) |
+| Underglow | 8 × WS2812B (LED1–LED8) = 8-pixel chain on SPI1 MOSI = D19 (P0.02) |
 | LED power | LED rail switched by P-MOSFET Q1 via EXT_POWER on D20 (P0.29), active high; LEDs draw 0 mA when off |
 | VCC for 595 + nice!view | nice!nano P0.13 held high by a GPIO hog (`vcc_always_on`) |
 | Battery | LiPo on JST-PH J2 (pin 1 = BAT+), slide switch SW66, reset button SW67 |
-| Special keys | Fn+Esc = battery check on LED9 (`&batled`); bottom-row "Snip" key = Win+Shift+S, Fn+Snip = Print Screen |
+| Special keys | Bottom-row "Snip" key = Win+Shift+S, Fn+Snip = Print Screen |
 
 ### 1.2 Dongles
 
@@ -37,7 +37,7 @@ free. This plan builds the other half in about **19 weeks of part-time work (10�
 | nice!nano as dongle | nRF52840 | Bluetooth LE split (keyboard = peripheral) | shield `byrantk_lp63_dongle` |
 | kerf_dongle (own PCB) | nRF52833 QFN-40, RGB status LED on P0.29–P0.31 (active low) | BLE split, or ESB 2.4 GHz | board `kerf_dongle`, shield `byrantk_lp63_dongle` or `byrantk_lp63_esb_dongle` |
 
-With a dongle, ZMK runs the **keymap on the dongle** (central). Lighting, LED9, battery and the display live on the **keyboard**
+With a dongle, ZMK runs the **keymap on the dongle** (central). Lighting, battery and the display live on the **keyboard**
 (peripheral). The ZMK split link only forwards behavior invocations (key presses), not arbitrary settings.
 
 ### 1.3 Firmware repositories (existing)
@@ -49,8 +49,6 @@ With a dongle, ZMK runs the **keymap on the dongle** (central). Lighting, LED9, 
 
 Existing custom code in both repos (keep it working):
 
-- `src/kerf_led_split.c` — `kerf,led-strip-split` driver: underglow sees 8 pixels, the real chain has 9; pixel 9 = LED9.
-- `src/kerf_batled.c` + `src/behaviors/behavior_batled.c` — `&batled` (event-source locality): tap = 1 s, hold = until release (max 10 s); green > 50 %, yellow 20–50 %, red < 20 %; low-battery blink ≤ 10 % at most every 5 min. Kconfig: `KERF_BATLED_*`.
 - `src/dongle_status_led.c` — kerf_dongle RGB status LED.
 - `boards/shields/byrantk_lp63/*` — shield, matrix transform (`columns = <9>`, `rows = <8>`), physical layout, keymaps.
 
@@ -96,7 +94,6 @@ Release tags: **v1.0** = parity with the big hubs for this hardware · **v1.1** 
 | Macros | 16 slots × 64 steps stored on device, bound as `&kmacro N` | v1.0 | All |
 | Lighting | Underglow on/off, effect, HSB colour, brightness, speed | v1.0 | Keyboard |
 | Lighting | Auto-off on USB unplug, sleep timeout | v1.0 | Keyboard |
-| Lighting | LED9 battery indicator: brightness (normal + low), show time, low-battery %, blink interval | v1.0 | Keyboard |
 | Lighting | One colour synced across all connected Kerf devices | v1.1 | All |
 | Lighting | Screen/music reactive lighting (desktop app) | Later | Keyboard, macro pad |
 | Display | Widget layout editor: battery, BT profile, layer, caps lock, WPM, output, clock | v1.1 | Keyboard |
@@ -139,7 +136,7 @@ Release tags: **v1.0** = parity with the big hubs for this hardware · **v1.1** 
                 │                          │
    ┌────────────┴───────┐     ┌────────────┴──────────┐
    │ Dongle (BLE / ESB) │────▶│ kerf_keeb LP63        │   Macro pad / mouse (later)
-   │ keymap, macros,    │split│ lighting, LED9,       │   same zmk-kerf module
+   │ keymap, macros,    │split│ lighting, battery,    │   same zmk-kerf module
    │ profiles           │link │ battery, display      │
    └────────────────────┘     └───────────────────────┘
         zmk-kerf firmware module runs on every device
@@ -165,7 +162,7 @@ message Request {
   uint32 request_id = 1;
   oneof subsystem {
     core.Request     core     = 10;  // device info, lock state, reboot to bootloader, factory reset
-    lighting.Request lighting = 11;  // underglow state + LED9 battery indicator config
+    lighting.Request lighting = 11;  // underglow state
     macros.Request   macros   = 12;  // list/get/set/clear macro slots
     profiles.Request profiles = 13;  // list, activate, save-as, export blob, import blob
     display.Request  display  = 14;  // layout, images (chunked), animation, live data push
@@ -180,7 +177,7 @@ enum ErrorCode { OK = 0; LOCKED = 1; UNSUPPORTED = 2; INVALID = 3; NO_SPACE = 4;
 ```
 
 `core.GetDeviceInfoResponse` must include: `model_id`, `usb_vid`, `usb_pid`, `fw_version`, `protocol_version`,
-`capabilities` (bitmap: KEYMAP, LIGHTING_UNDERGLOW, BATLED, MACROS, PROFILES, DISPLAY_NICEVIEW, POINTER, ENCODER),
+`capabilities` (bitmap: KEYMAP, LIGHTING_UNDERGLOW, MACROS, PROFILES, DISPLAY_NICEVIEW, POINTER, ENCODER),
 `role` (STANDALONE, CENTRAL_DONGLE, PERIPHERAL), `battery_percent`, `charging`, `link` (USB, BLE, ESB).
 
 Encoding: `ts-proto` on the host, `nanopb` in firmware (same `.proto` files from `kerf-protocol`).
@@ -191,7 +188,6 @@ Encoding: `ts-proto` on the host, `nanopb` in firmware (same `.proto` files from
 |---|---|
 | `kerf/ver` | settings schema version |
 | `kerf/light` | underglow config, auto-off rules |
-| `kerf/batled` | LED9 brightness, low brightness, show/max ms, low %, repeat minutes (replaces the Kconfig defaults at runtime) |
 | `kerf/power` | debounce press/release ms, idle/sleep timeouts |
 | `kerf/macro/<n>` | macro slot n (≤ 64 steps) |
 | `kerf/prof/<n>` | profile n snapshot |
@@ -202,7 +198,7 @@ Writes are debounced (ZMK already delays settings saves) to limit flash wear.
 ### 4.4 Dongle rule (v1)
 
 Keymap, macros and profiles are edited on the device the app is connected to (the dongle when one is used). Keyboard-side
-settings (lighting, LED9, display, keyboard battery) need the keyboard connected by USB or BLE directly. Through a
+settings (lighting, display, keyboard battery) need the keyboard connected by USB or BLE directly. Through a
 dongle, v1 only sends lighting *commands* as behavior invocations (`&rgb_ug` on BLE, `&rgb_esb` on ESB). A custom split
 message for full settings relay is a later task.
 
@@ -246,9 +242,9 @@ zmk-config-byrantk_lp63/, zmk-config-esb/   # existing; add zmk-kerf to west.yml
   "modelId": "kerf-lp63",
   "name": "kerf_keeb LP63",
   "usb": { "vid": "0x1D50", "pid": "0x615E" },
-  "capabilities": ["KEYMAP", "ENCODER", "LIGHTING_UNDERGLOW", "BATLED", "MACROS", "PROFILES", "DISPLAY_NICEVIEW"],
+  "capabilities": ["KEYMAP", "ENCODER", "LIGHTING_UNDERGLOW", "MACROS", "PROFILES", "DISPLAY_NICEVIEW"],
   "display": { "type": "nice!view", "width": 160, "height": 68, "bpp": 1 },
-  "lighting": { "underglowPixels": 8, "batledPixel": 9 },
+  "lighting": { "underglowPixels": 8 },
   "firmware": { "bootloader": "adafruit-uf2", "uf2Family": "0xADA52840" }
 }
 ```
@@ -280,7 +276,7 @@ Rule: the app routes pages by `capabilities`, never by product name.
 |---|---|---|---|---|
 | 1 | 1–2 | Studio on kerf_keeb | Move BLE and ESB configs to **one** ZMK version; `CONFIG_ZMK_STUDIO=y`, `studio-rpc-usb-uart` snippet, `&studio_unlock` binding; test with ZMK's own Studio app | A remap survives a power cycle, direct and through each dongle |
 | 2 | 3–5 | Kerf Hub shell | Monorepo, connect flow, keyboard drawn from physical layout, remap + layers via Studio client, branding | It replaces Studio for daily use |
-| 3 | 6–9 | Kerf protocol + settings | `zmk-kerf` transports (USB HID + BLE GATT), core/lighting/batled/power services, app pages | Every lighting/LED9/debounce setting round-trips and survives reboot |
+| 3 | 6–9 | Kerf protocol + settings | `zmk-kerf` transports (USB HID + BLE GATT), core/lighting/power services, app pages | Every lighting/debounce setting round-trips and survives reboot |
 | 4 | 10–12 | Macros | `&kmacro`, slot editor, recorder, text macros | A 64-step macro plays correctly over USB, BLE and both dongles |
 | 5 | 13–14 | Profiles + updates | 3 profile slots, export/import, one-click UF2 update | A failed update is always recoverable by double-tapping reset |
 | 6 | 15–16 | Desktop + v1.0 | Tauri builds (Windows installer, macOS), error reporting, user guide, GitHub release | v1.0 tagged and published with the OSHWLab kerf_keeb page |

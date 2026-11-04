@@ -10,7 +10,7 @@ Both boards were designed in **EasyEDA Pro** (project `kerf_keeb`, boards `LP63_
 | `dongle/kerf_dongle_CPL_JLC.csv` | Dongle placement list (top side, 31 parts; C20 is left unfitted on purpose) |
 | `artwork/*.svg` | kerf_keeb logo and silkscreen artwork |
 
-> **Gerbers:** the final Gerber files will be added once they're exported from the current revision. Copper and silkscreen changed on 2026-10-28, so older exports are out of date. The EasyEDA project will also be published on OSHWLab.
+> **Gerbers:** the final Gerber files will be added once they're exported from the current revision. Copper changed again on 2026-11-04 (battery LED removed), so older exports are out of date. The EasyEDA project will also be published on OSHWLab.
 
 ---
 
@@ -26,7 +26,6 @@ Both boards were designed in **EasyEDA Pro** (project `kerf_keeb`, boards `LP63_
 | Display | nice!view on a 5-pin header (J1), sharing SPI0 with the 74HC595 |
 | Encoder | Alps EC12E1240301 (SW65): A/B for rotation, pin D for the push switch |
 | Underglow | 8 × WS2812B-B/W 5050 (LED1–LED8, bottom) |
-| Battery LED | LED9: WS2812B-Mini 3535, top side right of ↑, hand-soldered, last in the LED chain |
 | Battery | JST-PH 2-pin SMD connector (J2): pin 1 = BAT+, pin 2 = GND |
 | Switches | SW66: slide power switch; SW67: reset button (bottom side) |
 | Mounting | 8 × M2 holes for the plate and case |
@@ -53,13 +52,13 @@ Both boards were designed in **EasyEDA Pro** (project `kerf_keeb`, boards `LP63_
 - **VCC rail:** the controller's switched VCC (P0.13) is held on by firmware, because it powers the 74HC595 and the nice!view.
 - **Underglow on battery:** it only runs while USB is plugged in (`ZMK_RGB_UNDERGLOW_AUTO_OFF_USB`). Below about 3.7 V the WS2812B-B/W is out of spec.
 
-### Verification (2026-10-28)
+### Verification (2026-11-04)
 
 | Check | Result |
 |---|---|
 | PCB DRC (strict) | 0 errors |
 | Schematic DRC | 0 errors, 0 warnings |
-| Schematic ⇄ PCB | identical: 108 nets, 389 pins, 164 parts, footprints and LCSC numbers match |
+| Schematic ⇄ PCB | identical: 107 nets, 385 pins, 163 parts, footprints and LCSC numbers match |
 | Matrix | all 65 keys traced from PCB net → firmware transform → physical position |
 | BOM ⇄ CPL ⇄ PCB | designators and positions cross-checked |
 
