@@ -55,7 +55,7 @@ appears → drag the `.uf2` on.
 
 ## What works
 
-- All 65 keys, the knob press (Mute; Fn + press = Play/Pause), the encoder (sensor events are cumulative on air, so a lost packet never loses a
+- All 65 keys, the encoder (sensor events are cumulative on air, so a lost packet never loses a
   step), all layers, combos, hold-taps (they run on the dongle)
 - Underglow keys on the Fn layer — they use `&rgb_esb` (in this repo), which routes the command
   over ESB to the keyboard. The stock `&rgb_ug` can't do this on an ESB dongle (ESB has no

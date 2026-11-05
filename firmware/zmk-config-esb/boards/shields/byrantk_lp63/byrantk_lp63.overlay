@@ -1,7 +1,7 @@
 #include "byrantk_lp63.dtsi"
 
 / {
-    kscan_matrix: kscan_matrix {
+    kscan0: kscan0 {
         compatible = "zmk,kscan-gpio-matrix";
                 diode-direction = "row2col";
         wakeup-source;
@@ -28,31 +28,6 @@
             , <&shifter0 1 GPIO_ACTIVE_HIGH>
             , <&shifter0 3 GPIO_ACTIVE_HIGH>
             ;
-    };
-};
-
-/* Encoder push (EC12 pin D -> ENC_SW -> D18 / P1.15), switch to GND. */
-/ {
-    kscan_direct: kscan_direct {
-        compatible = "zmk,kscan-gpio-direct";
-        wakeup-source;
-        input-gpios = <&pro_micro 18 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>;
-    };
-
-    kscan0: kscan0 {
-        compatible = "zmk,kscan-composite";
-        wakeup-source;
-        rows = <9>;
-        columns = <9>;
-
-        matrix {
-            kscan = <&kscan_matrix>;
-        };
-
-        encoder_push {
-            kscan = <&kscan_direct>;
-            row-offset = <8>;
-        };
     };
 };
 

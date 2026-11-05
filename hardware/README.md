@@ -10,7 +10,7 @@ Both boards were designed in **EasyEDA Pro** (project `kerf_keeb`, boards `LP63_
 | `dongle/kerf_dongle_CPL_JLC.csv` | Dongle placement list (top side, 31 parts; C20 is left unfitted on purpose) |
 | `artwork/*.svg` | kerf_keeb logo and silkscreen artwork |
 
-> **Gerbers:** the final Gerber files will be added once they're exported from the current revision. Copper changed again on 2026-11-04 (battery LED removed), so older exports are out of date. The EasyEDA project will also be published on OSHWLab.
+> **Gerbers:** the final Gerber files will be added once they're exported from the current revision. Final exports are dated 2026-11-05 (`kerf_keeb_LP63_Gerber_2026-11-05.zip`, `kerf_dongle_Gerber_2026-11-05.zip`); anything older is out of date. The EasyEDA project will also be published on OSHWLab.
 
 ---
 
@@ -42,7 +42,7 @@ Both boards were designed in **EasyEDA Pro** (project `kerf_keeb`, boards `LP63_
 | WS2812 data (SPI1 MOSI) | D19 / P0.02 | LED_DATA |
 | LED power enable | D20 / P0.29 | LED_PWR_EN |
 | Encoder A / B | D0 / D1 | ENC_A / ENC_B |
-| Encoder push | D18 / P1.15 (active low, internal pull-up) | ENC_SW |
+| Encoder mounting lugs (SW65 D/E) | — | GND |
 | SPI1 SCK (unused clock) | P1.07 back pad, not connected | — |
 
 ### Power design
@@ -52,13 +52,13 @@ Both boards were designed in **EasyEDA Pro** (project `kerf_keeb`, boards `LP63_
 - **VCC rail:** the controller's switched VCC (P0.13) is held on by firmware, because it powers the 74HC595 and the nice!view.
 - **Underglow on battery:** it only runs while USB is plugged in (`ZMK_RGB_UNDERGLOW_AUTO_OFF_USB`). Below about 3.7 V the WS2812B-B/W is out of spec.
 
-### Verification (2026-11-04)
+### Verification (2026-11-05)
 
 | Check | Result |
 |---|---|
 | PCB DRC (strict) | 0 errors |
 | Schematic DRC | 0 errors, 0 warnings |
-| Schematic ⇄ PCB | identical: 107 nets, 385 pins, 163 parts, footprints and LCSC numbers match |
+| Schematic ⇄ PCB | identical: 106 nets, 384 pins, 163 parts, footprints and LCSC numbers match |
 | Matrix | all 65 keys traced from PCB net → firmware transform → physical position |
 | BOM ⇄ CPL ⇄ PCB | designators and positions cross-checked |
 

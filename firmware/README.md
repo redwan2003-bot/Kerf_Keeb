@@ -11,7 +11,7 @@ Each folder is a complete ZMK user config. Push either one on its own as a GitHu
 
 ## Ready-made files (`prebuilt/`)
 
-Built on 2026-11-04 (BLE v12, ESB v8): encoder push, 8-LED underglow chain (battery LED removed).
+Built on 2026-11-05 (BLE v13, ESB v9): 65 keys, knob turn only (no push switch), 8-LED underglow chain.
 
 **`prebuilt/ble/`**
 

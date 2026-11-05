@@ -5,7 +5,7 @@ switches, a nice!nano v2-compatible nRF52840, a 74HC595 row driver, a nice!view,
 with push and 8 × WS2812 underglow. Bluetooth + USB, with an
 optional USB dongle (the custom nRF52833 kerf dongle, or a spare nice!nano).
 
-> **Current: firmware v12 (2026-11-04).** The numbered list at the end of this file is the change
+> **Current: firmware v13 (2026-11-05).** The numbered list at the end of this file is the change
 > history. Where it disagrees with this section, this section is current.
 
 ## Layout
@@ -18,8 +18,7 @@ Shift Z    X    C    V    B    N    M    ,    .    /    Shift Up
 Ctrl  Win  Alt  Fn  [Space ]  =    \    `    Del  Snip Left Down Right      + knob (key position 66)
 ```
 
-Snip = Win + Shift + S. The knob turns for volume (Fn + turn: underglow brightness); a press is Mute
-(Fn + press: Play/Pause).
+Snip = Win + Shift + S. The knob turns for volume (Fn + turn: underglow brightness). It has no push switch.
 
 ## Fn layer (hold Fn)
 
@@ -36,7 +35,7 @@ Snip = Win + Shift + S. The knob turns for volume (Fn + turn: underglow brightne
 | ↑ ← ↓ → | Page Up / Home / Page Down / End |
 | Del | Clear the current Bluetooth pairing |
 | Snip | Print Screen |
-| Knob | turn: underglow brightness; press: Play/Pause |
+| Knob | turn: underglow brightness |
 
 ## Hardware pin map (nice!nano v2 pin names)
 
@@ -50,7 +49,6 @@ Snip = Win + Shift + S. The knob turns for volume (Fn + turn: underglow brightne
 | WS2812 data (spi1 MOSI) | D19 (P0.02). spi1 SCK goes to P1.07, a back pad not connected on this PCB |
 | Underglow power enable | D20 (P0.29), active high (Q2 → Q1 feeds LED_VCC from B+). P0.13 (VCC) is held on by a GPIO hog |
 | Encoder A / B | D0 (P0.08) / D1 (P0.06); UART on these pins is disabled |
-| Encoder push | D18 (P1.15), active low with pull-up, read by a `zmk,kscan-gpio-direct` inside a `zmk,kscan-composite` (matrix + direct), row 8 col 0 = key position 66 |
 
 ## Builds (`build.yaml`)
 
@@ -135,3 +133,6 @@ Fn + B on the keyboard while connected) and copy the new UF2.
 14. Battery LED removed (2026-11-04): LED9 is no longer on the PCB. `&batled`, `kerf_batled.c` and
     `kerf_led_split.c` are gone, the WS2812 chain is back to 8 pixels, and Fn + Esc is plain Esc.
     Battery level is still reported to the host and the dongle.
+15. Encoder push removed (2026-11-05): the EC12E1240301 footprint has no push-switch pins; its D/E pads
+    are the mounting lugs, now both GND. Back to the plain 8-row matrix kscan and 65 bindings per layer.
+    D18 is unused.

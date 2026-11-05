@@ -37,7 +37,7 @@ It works in three ways:
 |---|---|
 | **Keys** | 65 hot-swap keys (Gateron KS-33 / Low Profile 2.0), 19.05 mm pitch, 13 × 5 grid with a 2U space and a dedicated arrow cluster |
 | **Snip key** | One key for Win + Shift + S (screenshot); Fn + Snip = Print Screen |
-| **Knob** | Alps EC12 encoder. Turn = volume, Fn + turn = underglow brightness, press = mute, Fn + press = play/pause |
+| **Knob** | Alps EC12 encoder. Turn = volume, Fn + turn = underglow brightness (rotation only, no push switch) |
 | **Display** | nice!view (Sharp memory LCD): battery, connection and layer. The ESB build adds link quality (RSSI, channel, retries) |
 | **Lighting** | 8 × WS2812B underglow, with a MOSFET switch that cuts their power when off |
 | **Wireless** | BLE 5 to up to 5 hosts, or the kerf dongle (BLE or Nordic ESB 2.4 GHz) |
@@ -116,7 +116,7 @@ The ready-made files are in [firmware/prebuilt](firmware/prebuilt). To flash, do
 
 - [x] Schematic and PCB for the keyboard and dongle, DRC-clean, schematic ⇄ PCB verified
 - [x] JLCPCB BOM/CPL files checked (all parts exist, designators match the PCB)
-- [x] BLE and ESB firmware, dongle status LED, encoder push
+- [x] BLE and ESB firmware, dongle status LED
 - [x] Printable switch plate with fit coupon, and an EC12 knob
 - [ ] Final Gerber export and the EasyEDA project published on OSHWLab
 - [ ] First 5 boards built and tested (keys, power, radio range, sleep current)
