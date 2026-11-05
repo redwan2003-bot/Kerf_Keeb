@@ -4,8 +4,8 @@
 
 | Board | Gerber | BOM | CPL |
 |---|---|---|---|
-| Keyboard | export from `LP63_PCB` in EasyEDA Pro | `hardware/keyboard/kerf_keeb_BOM_JLC.csv` | `hardware/keyboard/kerf_keeb_CPL_JLC.csv` |
-| Dongle | export from `Dongle_PCB` | `hardware/dongle/kerf_dongle_BOM_JLC.csv` | `hardware/dongle/kerf_dongle_CPL_JLC.csv` |
+| Keyboard | `kerf_keeb_LP63_Gerber_2026-11-05.zip` (from `LP63_PCB`) | `hardware/keyboard/kerf_keeb_BOM_JLC.csv` | `hardware/keyboard/kerf_keeb_CPL_JLC.csv` |
+| Dongle | `kerf_dongle_Gerber_2026-11-05.zip` (from `Dongle_PCB`) | `hardware/dongle/kerf_dongle_BOM_JLC.csv` | `hardware/dongle/kerf_dongle_CPL_JLC.csv` |
 
 Use the `_JLC` BOM/CPL files from this repo, not EasyEDA's own BOM export. Never export from a PCB named `ARCHIVE_DO_NOT_ORDER_…`.
 
